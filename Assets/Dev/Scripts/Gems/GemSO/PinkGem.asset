@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c49e703918977842bfa9655d0df9048, type: 3}
   m_Name: PinkGem
   m_EditorClassIdentifier: 
-  <GemName>k__BackingField: PinkGem
-  <InitSellingPrice>k__BackingField: 20
-  <GemIcon>k__BackingField: {fileID: 21300000, guid: bca80ebc3bc6d0848a9b3f1810df05bf, type: 3}
-  <GemPrefab>k__BackingField: {fileID: 6737551214274907106, guid: ae8104b0743319346a99955006e5c9ca, type: 3}
+  <Name>k__BackingField: Pink
+  <InitialPrice>k__BackingField: 1000
+  <Icon>k__BackingField: {fileID: 21300000, guid: bca80ebc3bc6d0848a9b3f1810df05bf, type: 3}
+  <Model>k__BackingField: {fileID: 6737551214274907106, guid: ae8104b0743319346a99955006e5c9ca, type: 3}

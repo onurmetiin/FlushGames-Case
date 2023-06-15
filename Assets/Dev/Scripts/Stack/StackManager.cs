@@ -50,9 +50,9 @@ public class StackManager : MonoBehaviour
                         //gem parenti null a çekildi
                         removedGem.transform.localPosition= RemovingPos.position;
                         removedGem.transform.parent = null;
-                        //Destroy(removedGem.gameObject);
+                        Destroy(removedGem.gameObject);
                     });
-            removeTween.Kill();
+            //removeTween.Kill();
         }
     }
 
@@ -60,9 +60,12 @@ public class StackManager : MonoBehaviour
     {
         if (other.CompareTag("Gem"))
         {
+            Debug.Log("Çarptim");
             Gem gemToCarry = other.GetComponent<Gem>();
-            AddGem(gemToCarry);
+            //AddGem(gemToCarry);
             Debug.Log("Gem toplandý");
+            gemToCarry.tile.CreateGem();
+            Destroy(other.gameObject);
         }
     }
 

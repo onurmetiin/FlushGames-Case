@@ -6,24 +6,56 @@ using UnityEngine;
 
 public class Gem : MonoBehaviour
 {
-    [SerializeField] List<GemScriptable> gemScriptables = new List<GemScriptable>();
-    public string _gemName;
-    public float  _initSellingPrice;
-    public Sprite _gemSprite;
-    public GameObject _gemPrefab;
+    public GemTypeSO gemType;
+    public Tile tile;
 
-    public void Start()
+    bool isCollectable = false;
+
+    float scale = 0;
+
+    //for performance;
+    bool isUpdateEnable = true;
+
+    BoxCollider collider;
+
+    void Awake()
     {
-        CreateRandomGem();
+        collider = gameObject.GetComponent<BoxCollider>();
+        collider.enabled = false;
+    }
+    private void Start()
+    {
+        
+    }
+
+    void Update()
+    {
+        if (!isUpdateEnable) return;
+
+        scale += (Time.deltaTime / 5);
+
+        if (scale >= 0.25f && !isCollectable)
+        {
+            isCollectable = true;
+            collider.enabled = true;
+        }
+
+        if (scale >= 1)
+        {
+            scale = 1;
+            isUpdateEnable = false;
+        }
+
+        transform.localScale = new Vector3(scale, scale, scale);
+
+        //Debug.Log("scale -> " + scale);
+
     }
 
     void CreateRandomGem()
-    { 
-        int randomGem = Random.Range(0, gemScriptables.Count);
-        Debug.Log("random gem: " + randomGem);
-        _gemName = gemScriptables[randomGem].GemName;
-        _initSellingPrice = gemScriptables[randomGem].InitSellingPrice;
-        _gemSprite = gemScriptables[randomGem].GemIcon;
-        _gemPrefab = gemScriptables[randomGem].GemPrefab;       
+    {
+
     }
+
+
 }

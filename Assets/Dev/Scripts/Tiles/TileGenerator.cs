@@ -12,7 +12,6 @@ public class TileGenerator : MonoBehaviour
         GenerateTiles();
     }
 
-    [ExecuteInEditMode]
     public void GenerateTiles()
     {
         for (int row = 0; row < rows; row++)
