@@ -13,8 +13,8 @@ public class Gem : MonoBehaviour
 
     float scale = 0;
 
-    //for performance;
-    bool isUpdateEnable = true;
+    //for performance increasement;
+    public bool isUpdateEnable = true;
 
     BoxCollider collider;
 
@@ -22,10 +22,6 @@ public class Gem : MonoBehaviour
     {
         collider = gameObject.GetComponent<BoxCollider>();
         collider.enabled = false;
-    }
-    private void Start()
-    {
-        
     }
 
     void Update()
@@ -51,11 +47,4 @@ public class Gem : MonoBehaviour
         //Debug.Log("scale -> " + scale);
 
     }
-
-    void CreateRandomGem()
-    {
-
-    }
-
-
 }

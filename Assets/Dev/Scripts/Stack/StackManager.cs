@@ -9,6 +9,9 @@ public class StackManager : MonoBehaviour
     public List<Gem> gems = new List<Gem>();
     [SerializeField] Transform AddingPos, RemovingPos;
 
+    bool isSold = false;
+    bool isStacked = false;
+
     public StackManager()
     {
         gems = new List<Gem>();
@@ -16,71 +19,76 @@ public class StackManager : MonoBehaviour
 
     public void AddGem(Gem gem)
     {
-        //gem listeye ekledik
+        //gem listeye ekleme iþlemi
         gems.Add(gem);
 
+        //gem parenti stickmanBag ayarlandý
+        gem.gameObject.transform.SetParent(AddingPos.transform);
+
         //gem taþýma iþlemi
-        Tween addingTween = gem.gameObject.transform
-            .DOJump(new Vector3(AddingPos.position.x, AddingPos.position.y + (gems.Count), AddingPos.position.z), 5, 1, .3f)
+        gem.gameObject.transform
+            .DOLocalJump(new Vector3(0, gems.Count, 0), 5, 1, .3f)
             .OnComplete(() => 
-            { 
-                //gem parenti stickmanBag ayarlandý
-                gem.gameObject.transform.SetParent(AddingPos.transform);
-                gem.gameObject.transform.localPosition = new Vector3(0, AddingPos.position.y + (gems.Count),0);                
-            });          
+            {
+                isStacked = false;
+            });    
     }
 
     public void RemoveGem()
-    {
-        if (gems.Count > 0)
-        {
-            //gem listeden silindi
-            Gem removedGem = gems[gems.Count - 1];
-            gems.RemoveAt(gems.Count - 1);
+    {                
+        Gem removedGem = gems[gems.Count - 1];        
 
-            //gem satma animasyonu
-            Tween removeTween = removedGem.gameObject.transform
-                .DOJump(RemovingPos.position, 5, 1, 2f)
-                .OnUpdate(() => 
-                    {
-                        removedGem.gameObject.transform.DOScale(Vector3.zero, 3f);  
-                    })
-                .OnComplete(() => 
-                    { 
-                        //gem parenti null a çekildi
-                        removedGem.transform.localPosition= RemovingPos.position;
-                        removedGem.transform.parent = null;
-                        Destroy(removedGem.gameObject);
-                    });
-            //removeTween.Kill();
-        }
+        //gem satma animasyonu
+        Tween removeTween = removedGem.gameObject.transform
+            .DOJump(RemovingPos.position, 5, 1, .1f)
+            .OnComplete(() => 
+                { 
+                    removedGem.transform.parent = null;
+                    removedGem.transform.localPosition = RemovingPos.position;
+                    Destroy(removedGem.gameObject);
+
+                    isSold = false;
+                });
+        
+        //gem listeden silindi       
+        gems.RemoveAt(gems.Count - 1);        
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Gem"))
+        if (other.CompareTag("Gem") && !isStacked)
         {
-            Debug.Log("Çarptim");
+            isStacked = true;
             Gem gemToCarry = other.GetComponent<Gem>();
-            //AddGem(gemToCarry);
-            Debug.Log("Gem toplandý");
+            gemToCarry.isUpdateEnable = false;
+
+            //Gem i sýrtýna al
+            AddGem(gemToCarry);
+
+            //Toplandýktan sonra yeni gem oluþtur                        
             gemToCarry.tile.CreateGem();
-            Destroy(other.gameObject);
         }
     }
 
     private void OnTriggerStay(Collider other)
     {
-        if (!other.CompareTag("SellingArea")) return;        
-            
-        float counter = 5f;
-        counter -= Time.time;
-        if (counter<=0 && gems.Count>0)
+        if (!other.CompareTag("SellingArea")) return;
+
+        if (gems.Count > 0 && !isSold)
         {
+            isSold = true;
             RemoveGem();
-            counter = 5f;
-            Debug.Log("Gem Satýldý");
         }
+
+
+        //float counter = 5f;
+        //counter -= Time.time;
+        //if (counter<=0)
+        //{
+        //    RemoveGem();
+        //    counter = 5f;
+        //    Debug.Log("Gem Satýldý");
+        //}
         
     }
 }
