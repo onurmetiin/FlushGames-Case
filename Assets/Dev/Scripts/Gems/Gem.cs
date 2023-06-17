@@ -16,7 +16,7 @@ public class Gem : MonoBehaviour
     //for performance increasement;
     public bool isUpdateEnable = true;
 
-    BoxCollider collider;
+    Collider collider;
 
     void Awake()
     {

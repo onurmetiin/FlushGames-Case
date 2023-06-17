@@ -77,18 +77,9 @@ public class StackManager : MonoBehaviour
         if (gems.Count > 0 && !isSold)
         {
             isSold = true;
+
+            //Gem i sýrttan indirme
             RemoveGem();
         }
-
-
-        //float counter = 5f;
-        //counter -= Time.time;
-        //if (counter<=0)
-        //{
-        //    RemoveGem();
-        //    counter = 5f;
-        //    Debug.Log("Gem Satýldý");
-        //}
-        
     }
 }
