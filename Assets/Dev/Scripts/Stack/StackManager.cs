@@ -1,8 +1,10 @@
+using Assets.Dev.Scripts.Persistence;
 using Assets.Dev.Scripts.Tiles;
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class StackManager : MonoBehaviour
 {
@@ -11,6 +13,8 @@ public class StackManager : MonoBehaviour
 
     bool isSold = false;
     bool isStacked = false;
+
+    public UnityEvent MoneyEarnAnimation;
 
     public StackManager()
     {
@@ -46,7 +50,11 @@ public class StackManager : MonoBehaviour
                     removedGem.transform.parent = null;
                     removedGem.transform.localPosition = RemovingPos.position;
                     Destroy(removedGem.gameObject);
+                    MoneyEarnAnimation?.Invoke();
 
+                    PlayerDatabase.Instance.gemStatistics[removedGem.gemType.name] = PlayerDatabase.Instance.gemStatistics[removedGem.gemType.name] + 1;
+                    PlayerDatabase.SaveData();
+                    //PlayerPrefs.SetInt(removedGem.gemType.Name, PlayerPrefs.GetInt(removedGem.gemType.Name + 1));
                     isSold = false;
                 });
         
