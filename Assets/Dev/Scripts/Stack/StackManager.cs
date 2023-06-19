@@ -1,7 +1,4 @@
-using Assets.Dev.Scripts.Persistence;
-using Assets.Dev.Scripts.Tiles;
 using DG.Tweening;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -14,12 +11,7 @@ public class StackManager : MonoBehaviour
     bool isSold = false;
     bool isStacked = false;
 
-    public UnityEvent MoneyEarnAnimation;
-
-    public StackManager()
-    {
-        gems = new List<Gem>();
-    }
+    public UnityEvent UpdateMoneyText;
 
     public void AddGem(Gem gem)
     {
@@ -34,6 +26,8 @@ public class StackManager : MonoBehaviour
             .DOLocalJump(new Vector3(0, gems.Count, 0), 5, 1, .3f)
             .OnComplete(() => 
             {
+                //toplanýlan gem database de artýrýldý
+                DataManager.IncreaseCollectedGem(gem.gemType.Name);
                 isStacked = false;
             });    
     }
@@ -46,15 +40,12 @@ public class StackManager : MonoBehaviour
         Tween removeTween = removedGem.gameObject.transform
             .DOJump(RemovingPos.position, 5, 1, .1f)
             .OnComplete(() => 
-                { 
-                    removedGem.transform.parent = null;
-                    removedGem.transform.localPosition = RemovingPos.position;
-                    Destroy(removedGem.gameObject);
-                    MoneyEarnAnimation?.Invoke();
+                {                     
+                    //kazanýlan para database e eklendi
+                    float moneyToEarn = (removedGem.gemType.InitialPrice + (removedGem.transform.localScale.x * 100));
+                    DataManager.EarningMoney(moneyToEarn);
 
-                    PlayerDatabase.Instance.gemStatistics[removedGem.gemType.name] = PlayerDatabase.Instance.gemStatistics[removedGem.gemType.name] + 1;
-                    PlayerDatabase.SaveData();
-                    //PlayerPrefs.SetInt(removedGem.gemType.Name, PlayerPrefs.GetInt(removedGem.gemType.Name + 1));
+                    Destroy(removedGem.gameObject);
                     isSold = false;
                 });
         
@@ -66,15 +57,16 @@ public class StackManager : MonoBehaviour
     {
         if (other.CompareTag("Gem") && !isStacked)
         {
-            isStacked = true;
             Gem gemToCarry = other.GetComponent<Gem>();
             gemToCarry.isUpdateEnable = false;
 
-            //Gem i sýrtýna al
+            //Gem i çantaya ekle
             AddGem(gemToCarry);
 
             //Toplandýktan sonra yeni gem oluþtur                        
             gemToCarry.tile.CreateGem();
+            
+            isStacked = true;
         }
     }
 
@@ -87,7 +79,7 @@ public class StackManager : MonoBehaviour
             isSold = true;
 
             //Gem i sýrttan indirme
-            RemoveGem();
+            RemoveGem();                        
         }
     }
 }

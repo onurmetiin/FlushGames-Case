@@ -44,7 +44,5 @@ public class Gem : MonoBehaviour
 
         transform.localScale = new Vector3(scale, scale, scale);
 
-        //Debug.Log("scale -> " + scale);
-
     }
 }

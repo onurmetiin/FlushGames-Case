@@ -1,11 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
 using TMPro;
-using UnityEngine.Events;
-using Assets.Dev.Scripts.Persistence;
+using Assets.Scripts.Extension;
 
 public class UIManager : MonoBehaviour
 {
@@ -13,41 +10,40 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject statisticItemPrefab;
     [SerializeField] Transform statisticItemHolder;
 
-    [SerializeField] GameObject EarnedAmount;
+    [SerializeField] TextMeshProUGUI moneyText;
 
     private void Start()
     {
         CloseStatisticPanel();
-        DatabaseCheck();
+        UpdateMoneyTextUI();
     }
 
-    void DatabaseCheck() 
+    public void ShowUIStatistics()
     {
-        GameManager.Instance.availableGemTypes.ForEach(gemType => 
+        //Statistic paneli temizle
+        for (int i = 0; i < statisticItemHolder.childCount; i++)
         {
-            Debug.Log("Gem Name: " + gemType.Name);
-            // (Clone) Gem adýndan atýlacak
-            if (!PlayerDatabase.Instance.gemStatistics.ContainsKey(gemType.Name))
-            {
-                PlayerDatabase.Instance.gemStatistics.Add(gemType.Name, 0);
-            }
+            Destroy(statisticItemHolder.GetChild(i).gameObject);
+        }        
 
-            PlayerDatabase.SaveData();
+        //Statics leri panele yazdýr
+        int gemCount;
+        GameManager.Instance.availableGemTypes.ForEach(gemType =>
+        {
+            GameObject statisticItem = Instantiate(statisticItemPrefab, statisticItemHolder);
+
+            statisticItem.transform.Find("Icon").GetComponent<Image>().sprite = gemType.Icon;
+            statisticItem.transform.Find("Name").GetComponent<TextMeshProUGUI>().text = $"Gem Type: {gemType.Name}";
+
+            DataManager.Data.GemStatistics.TryGetValue(gemType.Name, out gemCount);
+            statisticItem.transform.Find("CollectedCount").GetComponent<TextMeshProUGUI>().text = "Collected Count:" + gemCount;
         });
     }
 
-    public void EarningMoneyEffect()
+    public void UpdateMoneyTextUI()
     {
-
-        TextMeshPro amountText = EarnedAmount.GetComponentInChildren<TextMeshPro>();
-        amountText.color = Color.white;
-
-        Color targetColor = amountText.color;
-        targetColor.a = 0f;
-
-        amountText.gameObject.transform.DOLocalMoveY(2, 1f);
-
-        amountText.gameObject.transform.localPosition = Vector3.zero;
+        moneyText.text = DataManager.Data.Money.ToShortFloat();
+        moneyText.gameObject.transform.DOScale(new Vector3(1.1f, 1.1f, 1.1f), .3f).SetLoops(2, LoopType.Yoyo);
     }
 
     public void OpenStatisticsPanel()
@@ -55,7 +51,7 @@ public class UIManager : MonoBehaviour
         statisticsPanel.transform
             .DOScale(Vector3.one, .3f)
             .SetEase(Ease.OutBounce);
-
+        
         ShowUIStatistics();
     }
 
@@ -63,18 +59,5 @@ public class UIManager : MonoBehaviour
     {
         statisticsPanel.transform
             .DOScale(Vector3.zero, .3f);
-    }
-
-    public void ShowUIStatistics()
-    {
-        GameManager.Instance.availableGemTypes.ForEach(gemType =>
-        {
-            GameObject go= Instantiate(statisticItemPrefab, statisticItemHolder);
-            go.transform.Find("Icon").GetComponent<Image>().sprite = gemType.Icon;
-            go.transform.Find("Name").GetComponent<TextMeshProUGUI>().text = $"Gem Type: {gemType.Name}";
-            go.transform.Find("CollectedCount").GetComponent<TextMeshProUGUI>().text = "Collected Count:" + PlayerDatabase.Instance.gemStatistics[gemType.Name].ToString();
-            //$"Collected Count: {PlayerPrefs.GetInt(gemType.Name)}";
-            Debug.Log(gemType.Name + " in toplanýlan gem sayýsý : " + PlayerPrefs.GetInt(gemType.Name));
-        });
     }
 }
