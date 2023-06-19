@@ -16,12 +16,12 @@ public class Gem : MonoBehaviour
     //for performance increasement;
     public bool isUpdateEnable = true;
 
-    Collider collider;
+    Collider gemCollider;
 
     void Awake()
     {
-        collider = gameObject.GetComponent<BoxCollider>();
-        collider.enabled = false;
+        gemCollider = gameObject.GetComponent<BoxCollider>();
+        gemCollider.enabled = false;
     }
 
     void Update()
@@ -33,7 +33,7 @@ public class Gem : MonoBehaviour
         if (scale >= 0.25f && !isCollectable)
         {
             isCollectable = true;
-            collider.enabled = true;
+            gemCollider.enabled = true;
         }
 
         if (scale >= 1)

@@ -8,7 +8,7 @@ using UnityEngine;
 
 namespace Assets.Dev.Editors.Tiles
 {
-    public class TileEditor:EditorWindow
+    public class TileEditor : EditorWindow
     {
         private GameObject boxPrefab;
         private int rows;
@@ -50,13 +50,13 @@ namespace Assets.Dev.Editors.Tiles
             if (gap <= 2.1) gap = 2.1f;
 
             GameObject grid = new GameObject("Grid");
-            
+
             for (int row = 0; row < rows; row++)
             {
                 for (int column = 0; column < columns; column++)
                 {
                     // Tile'ı instantiate et
-                    GameObject tile = Instantiate(boxPrefab, new Vector3(row * gap, 0, column * gap), Quaternion.identity,grid.transform);
+                    GameObject tile = Instantiate(boxPrefab, new Vector3(row * gap, 0, column * gap), Quaternion.identity, grid.transform);
                 }
             }
         }

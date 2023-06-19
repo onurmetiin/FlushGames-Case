@@ -2117,7 +2117,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.074444994, y: 0.052433554}
   m_AnchorMax: {x: 0.90452534, y: 1}
-  m_AnchoredPosition: {x: 0, y: -23.656347}
+  m_AnchoredPosition: {x: 0, y: -23.656454}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &606925289
@@ -2615,8 +2615,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 565615119}
   m_HandleRect: {fileID: 565615118}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.94164854
+  m_Value: 0
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -3395,7 +3395,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_LocalRotation: {x: 0.3810604, y: 0.046045527, z: -0.019005619, w: 0.9232073}
+  m_LocalRotation: {x: 0.3810604, y: 0.046045553, z: -0.01900563, w: 0.9232073}
   m_LocalPosition: {x: -0.51, y: 10.1, z: -6.84}
   m_LocalScale: {x: 1, y: 1.0000001, z: 1}
   m_ConstrainProportionsScale: 0
@@ -4467,7 +4467,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1533363221}
-  m_LocalRotation: {x: 0.3810604, y: 0.046045527, z: -0.019005619, w: 0.9232073}
+  m_LocalRotation: {x: 0.3810604, y: 0.046045553, z: -0.01900563, w: 0.9232073}
   m_LocalPosition: {x: -0.51, y: 10.1, z: -6.84}
   m_LocalScale: {x: 1, y: 1.0000001, z: 1}
   m_ConstrainProportionsScale: 0
@@ -5644,7 +5644,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
-  m_AdditionalShaderChannelsFlag: 25
+  m_AdditionalShaderChannelsFlag: 1
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
