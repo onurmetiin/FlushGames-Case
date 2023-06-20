@@ -45,6 +45,10 @@ public class StackManager : MonoBehaviour
                     float moneyToEarn = (removedGem.gemType.InitialPrice + (removedGem.transform.localScale.x * 100));
                     DataManager.EarningMoney(moneyToEarn);
 
+                    //Kazanýlan parayý UI da göster 
+                    UpdateMoneyText?.Invoke();
+
+
                     Destroy(removedGem.gameObject);
                     isSold = false;
                 });
