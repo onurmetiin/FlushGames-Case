@@ -23,7 +23,7 @@ public class StackManager : MonoBehaviour
 
         //gem taşıma işlemi
         gem.gameObject.transform
-            .DOLocalJump(new Vector3(0, gems.Count, 0), 5, 1, .3f)
+            .DOLocalJump(new Vector3(0, gems.Count, 0), 5, 1, .2f)
             .OnComplete(() => 
             {
                 //toplanılan gem database de artırıldı
